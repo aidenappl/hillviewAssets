@@ -34,7 +34,8 @@
                     <input #assetID type="text" placeholder="The Asset ID..." id="assetID" (keyup.enter)="next()">
                 </div>
                 <div class="input-wrapper">
-                    <input type="submit" value="Next Step" (click)="next()">
+                    <div class="loader" [hidden]="btnValue.length > 0"></div>
+                    <input type="submit" value={{btnValue}} (click)="next()">
                 </div>
             </div>
         </div>
@@ -46,16 +47,17 @@
             </div>
             <div class="inputs-container fullXCenter">
                 <div class="select-input">
-                    <input type="button" value="Check Out" [class.selected]="selectedAction === 'checkout'" id="checkout" (click)="setSelectAction($event)">
+                    <input *ngIf="asset && !asset.active_tab" type="button" value="Check Out" [class.selected]="selectedAction === 'checkout'" id="checkout" (click)="setSelectAction($event)">
                 </div>
                 <div class="select-input">
-                    <input type="button" value="Check In" [class.selected]="selectedAction === 'checkin'" id="checkin" (click)="setSelectAction($event)">
+                    <input *ngIf="asset && asset.active_tab" type="button" value="Check In" [class.selected]="selectedAction === 'checkin'" id="checkin" (click)="setSelectAction($event)">
                 </div>
                 <div class="select-input">
                     <input type="button" value="Lookup" [class.selected]="selectedAction === 'lookup'" id="lookup" (click)="setSelectAction($event)">
                 </div>
                 <div class="input-wrapper">
-                    <input type="submit" value="Next Step" (click)="next()">
+                    <div class="loader" [hidden]="btnValue.length > 0"></div>
+                    <input type="submit" value={{btnValue}} (click)="next()">
                 </div>
             </div>
         </div>
@@ -101,7 +103,8 @@
                     <span class="fullYCenter">Check if the camera requires service or maintainence.</span>
                 </div> -->
                 <div class="input-wrapper">
-                    <input type="submit" value="Done!" (click)="next()">
+                    <div class="loader" [hidden]="btnValue.length > 0">Loading...</div>
+                    <input type="submit" value={{btnValue}} (click)="next()">
                 </div>
             </div>
         </div>
