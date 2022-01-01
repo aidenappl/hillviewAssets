@@ -1,14 +1,124 @@
 <div class="page-wrapper">
-    <div class="page-module fullCenter">
-        <h2 class="header">Hillview Assets</h2>
-        <div class="input-container">
-            <input type="text" data-profileKey="name" id="profile-name-input" (focus)="formInputFocused($event)" (blur)="formInputBlurred($event);" (input)="formKeyup($event);">
-            <p class="label">Student ID<strong class="required">*</strong></p>
+    <!-- <div class="logo fullXCenter reg-image"></div> -->
+    <div class="center-modal fullCenter">
+        <div class="horizontal-checks fullXCenter">
+            <div class="step-object" [class.active]="step >= 1">
+                <span>1</span>
+            </div>
+            <div class="step-object" [class.active]="step >= 2">
+                <span>2</span>
+            </div>
+            <div class="step-object" [class.active]="step >= 3">
+                <span>3</span>
+            </div>
+            <div class="step-object" [class.active]="step >= 4">
+                <span>4</span>
+            </div>
+            <div class="step-hr fullYCenter">
+                <div class="fill" [ngStyle]="{'width': 'calc(25% * '+step+')'}"></div>
+            </div>
         </div>
-        <div class="input-container">
-            <input type="text" data-profileKey="name" id="profile-name-input" (focus)="formInputFocused($event)" (blur)="formInputBlurred($event);" (input)="formKeyup($event);">
-            <p class="label">Asset Tag<strong class="required">*</strong></p>
+        <!-- Step 1 -->
+        <div class="step-wrapper fullXCenter" [class.out]="step > 1" [class.active]="step == 1">
+            <div class="header-container">
+                <h2>Welcome! First things first...</h2>
+                <p>Get your Student ID and Asset tag ready!</p>
+            </div>
+            <div class="inputs-container fullXCenter">
+                <div class="input-wrapper">
+                    <p>Student ID</p>
+                    <input #studentID type="text" placeholder="Your Student ID..." (keyup.enter)="focusInput('assetID')">
+                </div>
+                <div class="input-wrapper">
+                    <p>Asset ID</p>
+                    <input #assetID type="text" placeholder="The Asset ID..." id="assetID" (keyup.enter)="next()">
+                </div>
+                <div class="input-wrapper">
+                    <input type="submit" value="Next Step" (click)="next()">
+                </div>
+            </div>
         </div>
-        <button>Check Out</button>
+        <!-- Step 2 -->
+        <div class="step-wrapper fullXCenter" [class.out]="step > 2" [class.active]="step == 2">
+            <div class="header-container">
+                <h2>Now select an option...</h2>
+                <p>What are you trying to accomplish?</p>
+            </div>
+            <div class="inputs-container fullXCenter">
+                <div class="select-input">
+                    <input type="button" value="Check Out" [class.selected]="selectedAction === 'checkout'" id="checkout" (click)="setSelectAction($event)">
+                </div>
+                <div class="select-input">
+                    <input type="button" value="Check In" [class.selected]="selectedAction === 'checkin'" id="checkin" (click)="setSelectAction($event)">
+                </div>
+                <div class="select-input">
+                    <input type="button" value="Lookup" [class.selected]="selectedAction === 'lookup'" id="lookup" (click)="setSelectAction($event)">
+                </div>
+                <div class="input-wrapper">
+                    <input type="submit" value="Next Step" (click)="next()">
+                </div>
+            </div>
+        </div>
+        <!-- Step 3 -->
+        <div class="step-wrapper fullXCenter" [class.out]="step > 3" [class.active]="step == 3">
+            <div class="header-container">
+                <h2>Let's get this done!</h2>
+                <p>Add some last bits and pieces.</p>
+            </div>
+            <div class="inputs-container fullXCenter">
+                <!-- Checkout -->
+                <div class="horizontal-square-select" *ngIf="selectedAction === 'checkout'">
+                    <div class="square-select" (click)="selectLocationAction('onsite')" [class.active]="locationAction === 'onsite'">
+                        <div class="sq-logo">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map-pin"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        </div>
+                        <div class="sq-text noselect">
+                            <h5>On-Campus</h5>
+                            <p>Will the equiptment remain here on campus?</p>
+                        </div>
+                    </div>
+                    <div class="square-select" (click)="selectLocationAction('offsite')" [class.active]="locationAction === 'offsite'">
+                        <div class="sq-logo">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+                        </div>
+                        <div class="sq-text noselect">
+                            <h5>Off-Campus</h5>
+                            <p>Do you plan on taking the equiptment home?</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-wrapper" *ngIf="selectedAction === 'checkout'">
+                    <p>Duration</p>
+                    <input #duration type="date">
+                </div>
+                <!-- Checkin -->
+                <div class="input-wrapper" *ngIf="selectedAction === 'checkin'">
+                    <p>Any Notes?</p>
+                    <textarea #notes placeholder="What condition is the equiptment in..."></textarea>
+                </div>
+                <!-- <div class="checkbox-wrapper" *ngIf="selectedAction === 'checkin'">
+                    <div class="check-container"></div>
+                    <span class="fullYCenter">Check if the camera requires service or maintainence.</span>
+                </div> -->
+                <div class="input-wrapper">
+                    <input type="submit" value="Done!" (click)="next()">
+                </div>
+            </div>
+        </div>
+        <!-- Step 4 - Success -->
+        <div class="step-wrapper fullXCenter" [class.out]="step > 4" [class.active]="step == 4">
+            <div class="check-wrapper fullXCenter">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fullCenter feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <div class="success-container">
+                <h2>All Set, Aiden!</h2>
+                <p>You are all set and thanks for using the Asset System.</p>
+                <div class="inputs-container fullXCenter">
+                    <div class="input-wrapper">
+                        <input type="submit" value="Start Over" (click)="reload()">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
