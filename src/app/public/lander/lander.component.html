@@ -114,7 +114,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fullCenter feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg>
             </div>
             <div class="success-container">
-                <h2>All Set, Aiden!</h2>
+                <h2>All Set{{!user ? "!" : ', ' + user.name.split(" ")[0]}}!</h2>
                 <p>You are all set and thanks for using the Asset System.</p>
                 <div class="inputs-container fullXCenter">
                     <div class="input-wrapper">
