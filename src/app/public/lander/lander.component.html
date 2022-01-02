@@ -111,7 +111,7 @@
                     <div class="device-details">
                         <h1>{{asset ? asset.name : "Title"}}</h1>
                         <h2>{{asset ? asset.description : "Subtitle"}}</h2>
-                        <a [ngClass]='asset ? (asset.active_tab ? "checkedout" : "checkedin") : ""'>{{asset ? (asset.active_tab ? "Checked Out" : "Available") : ""}}</a>
+                        <a (click)="back()" [ngClass]='asset ? (asset.active_tab ? "checkedout" : "checkedin") : ""'>{{asset ? (asset.active_tab ? "Checked Out" : "Available") : ""}}</a>
                     </div>
                 </div>
 

@@ -244,6 +244,11 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
   async back(): Promise<void> {
     this.step--;
+    if (this.step <= 2) {
+      this.btnValue = 'Next Step';
+    } else {
+      this.btnValue = 'Done!';
+    }
     console.log(this.step);
   }
 
