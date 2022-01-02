@@ -36,6 +36,51 @@
     }
 }
 
+.device-wrapper {
+    width: calc(100% - 4px);
+    height: 210px;
+    background-color: white;
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+    outline: 2px solid #8e9ec524;
+    .device-image {
+        width: 190px;
+        background-size: cover;
+        height: 190px;
+        background-color: #bec1e53d;
+        border-radius: 20px;
+    }
+    .device-details {
+        width: 55%;
+        margin-left: 30px;
+        padding-top: 15px;
+        h1 {
+            padding-bottom: 3px;
+            font-size: 30px;
+        }
+        h2 {
+            font-weight: 400;
+            font-size: 21px;
+        }
+        a {
+            position: absolute;
+            bottom: 15px;
+            padding: 5px 17px;
+            background: #bdffd5;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            &.checkedout {
+                background: #ffbdbd;
+            }
+            &.available {
+                background: #bdd4ff;
+            }
+        }
+    }
+}
+
 .horizontal-checks {
     display: flex; 
     width: 400px;
@@ -66,7 +111,7 @@
         }
     }
     .step-hr {
-        width: 100%;
+        width: 90%;
         overflow: hidden;
         height: 2px;
         background: #e4e7eb;
@@ -289,4 +334,32 @@
     width: 250px;
     height: 100px;
     background-image: url('/assets/logos/hillviewTVLogo-Primary.png');
+}
+
+.footer {
+    width: calc(100% - 50px);
+    height: fit-content;
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    p, a {
+        color: #7d889d3d;
+        font-weight: 200;
+    }
+    a {
+        font-weight: 500;
+    }
+    button {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        width: fit-content;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        color: #e1e4e9;
+        font-weight: 600;
+        cursor: pointer;
+    }
 }

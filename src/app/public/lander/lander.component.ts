@@ -60,6 +60,10 @@ export class LanderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  navigateToLogin(): void {
+    window.location.href = `https://team.hillview.tv/login`;
+  }
+
   selectLocationAction(input: string): void {
     this.locationAction = input;
   }
@@ -249,6 +253,10 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
   async done(): Promise<void> {
     try {
+      if (this.selectedAction === 'lookup') {
+        this.reload();
+        return;
+      }
       let validator = await this.valid(this.step);
       if (!validator.valid) {
         window.alert(validator.message);

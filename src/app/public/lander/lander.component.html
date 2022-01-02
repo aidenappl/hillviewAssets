@@ -1,4 +1,8 @@
 <div class="page-wrapper">
+    <div class="footer">
+        <p>Built by <a target="_blank" href="https://github.com/aidenappl">Aiden Appleby.</a></p>
+        <button (click)="navigateToLogin()">Login</button>
+    </div>
     <!-- <div class="logo fullXCenter reg-image"></div> -->
     <div class="center-modal fullCenter">
         <div class="horizontal-checks fullXCenter">
@@ -15,7 +19,7 @@
                 <span>4</span>
             </div>
             <div class="step-hr fullYCenter">
-                <div class="fill" [ngStyle]="{'width': 'calc(25% * '+step+')'}"></div>
+                <div class="fill" [ngStyle]="{'width': 'calc(33% * '+step+' + 20px)'}"></div>
             </div>
         </div>
         <!-- Step 1 -->
@@ -50,7 +54,7 @@
                     <input *ngIf="asset && !asset.active_tab" type="button" value="Check Out" [class.selected]="selectedAction === 'checkout'" id="checkout" (click)="setSelectAction($event)">
                 </div>
                 <div class="select-input">
-                    <input *ngIf="asset && asset.active_tab" type="button" value="Check In" [class.selected]="selectedAction === 'checkin'" id="checkin" (click)="setSelectAction($event)">
+                    <input *ngIf="asset && asset.active_tab && (asset.active_tab.associated_user == user.id)" type="button" value="Check In" [class.selected]="selectedAction === 'checkin'" id="checkin" (click)="setSelectAction($event)">
                 </div>
                 <div class="select-input">
                     <input type="button" value="Lookup" [class.selected]="selectedAction === 'lookup'" id="lookup" (click)="setSelectAction($event)">
@@ -68,6 +72,7 @@
                 <p>Add some last bits and pieces.</p>
             </div>
             <div class="inputs-container fullXCenter">
+
                 <!-- Checkout -->
                 <div class="horizontal-square-select" *ngIf="selectedAction === 'checkout'">
                     <div class="square-select" (click)="selectLocationAction('onsite')" [class.active]="locationAction === 'onsite'">
@@ -93,15 +98,24 @@
                     <p>Duration</p>
                     <input #duration type="date">
                 </div>
+
                 <!-- Checkin -->
                 <div class="input-wrapper" *ngIf="selectedAction === 'checkin'">
                     <p>Any Notes?</p>
                     <textarea #notes placeholder="What condition is the equiptment in..."></textarea>
                 </div>
-                <!-- <div class="checkbox-wrapper" *ngIf="selectedAction === 'checkin'">
-                    <div class="check-container"></div>
-                    <span class="fullYCenter">Check if the camera requires service or maintainence.</span>
-                </div> -->
+
+                <!-- Lookup -->
+                <div class="device-wrapper" *ngIf="selectedAction === 'lookup'">
+                    <div class="device-image reg-image" *ngIf="asset" [ngStyle]="{'background-image': 'url('+asset.image_url+')'}"></div>
+                    <div class="device-details">
+                        <h1>{{asset ? asset.name : "Title"}}</h1>
+                        <h2>{{asset ? asset.description : "Subtitle"}}</h2>
+                        <a [ngClass]='asset ? (asset.active_tab ? "checkedout" : "checkedin") : ""'>{{asset ? (asset.active_tab ? "Checked Out" : "Available") : ""}}</a>
+                    </div>
+                </div>
+
+                <!-- Step 3 Submit Btn -->
                 <div class="input-wrapper">
                     <div class="loader" [hidden]="btnValue.length > 0">Loading...</div>
                     <input type="submit" value={{btnValue}} (click)="done()">
