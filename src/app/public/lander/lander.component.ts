@@ -142,6 +142,7 @@ export class LanderComponent implements OnInit, AfterViewInit {
         }
         if (
           this.selectedAction === 'checkout' &&
+          this.locationAction === 'offsite' &&
           this.duration.nativeElement.value.length === 0
         ) {
           return { valid: false, message: 'missing duration of checkout' };
@@ -248,29 +249,44 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
   async done(): Promise<void> {
     try {
+      let validator = await this.valid(this.step);
+      if (!validator.valid) {
+        window.alert(validator.message);
+        setTimeout(() => {
+          if (this.step <= 2) {
+            this.btnValue = 'Next Step';
+          } else {
+            this.btnValue = 'Done!';
+          }
+        }, 200);
+        return;
+      }
       let data: any = {
         asset_id: this.asset.id,
         user_id: this.user.id,
       };
       if (this.selectedAction === 'checkout') {
-        data.offsite = (this.locationAction === 'offsite');
+        data.offsite = this.locationAction === 'offsite';
 
         let mydate: any = this.duration.nativeElement.value;
-        mydate = mydate.split("-");
-        var newDate = new Date( mydate[0], mydate[1], mydate[2]);
+        mydate = mydate.split('-');
+        var newDate = new Date(mydate[0], mydate[1], mydate[2]);
         console.log(newDate.getTime());
         data.duration = newDate;
       }
       if (this.selectedAction === 'checkin') {
-         data.notes = this.notesInput.nativeElement.value.trim()
+        data.notes = this.notesInput.nativeElement.value.trim();
       }
       this.btnValue = '';
-      const response: any = await this.request.post(`${environment.API_URL}/${this.selectedAction}`, data);
+      const response: any = await this.request.post(
+        `${environment.API_URL}/${this.selectedAction}`,
+        data
+      );
       if (response.status === 200) {
         this.next();
       } else {
         this.btnValue = 'Done!';
-        window.alert("Something went wrong!");
+        window.alert('Something went wrong!');
       }
     } catch (error) {
       throw error;

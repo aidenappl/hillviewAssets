@@ -89,7 +89,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="input-wrapper" *ngIf="selectedAction === 'checkout'">
+                <div class="input-wrapper" *ngIf="selectedAction === 'checkout'" [hidden]="locationAction === 'onsite'">
                     <p>Duration</p>
                     <input #duration type="date">
                 </div>
