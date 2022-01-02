@@ -156,7 +156,7 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
   async next(): Promise<void> {
     try {
-      if (this.step < 3) {
+      if (this.step < 4) {
         this.btnValue = '';
       }
       let validator = await this.valid(this.step);
@@ -253,14 +253,25 @@ export class LanderComponent implements OnInit, AfterViewInit {
         user_id: this.user.id,
       };
       if (this.selectedAction === 'checkout') {
-        data.offsite = (this.locationAction === 'offsite'),
-        data.duration = this.duration.nativeElement.value;
+        data.offsite = (this.locationAction === 'offsite');
+
+        let mydate: any = this.duration.nativeElement.value;
+        mydate = mydate.split("-");
+        var newDate = new Date( mydate[0], mydate[1], mydate[2]);
+        console.log(newDate.getTime());
+        data.duration = newDate;
       }
       if (this.selectedAction === 'checkin') {
          data.notes = this.notesInput.nativeElement.value.trim()
       }
-      const response = await this.request.post(`${environment.API_URL}/${this.selectedAction}`, data);
-      console.log(response)
+      this.btnValue = '';
+      const response: any = await this.request.post(`${environment.API_URL}/${this.selectedAction}`, data);
+      if (response.status === 200) {
+        this.next();
+      } else {
+        this.btnValue = 'Done!';
+        window.alert("Something went wrong!");
+      }
     } catch (error) {
       throw error;
     }

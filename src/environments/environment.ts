@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  API_URL: 'https://api.hillview.tv/assets/v1.1/'
+  // API_URL: 'https://api.hillview.tv/assets/v1.1/'
+  API_URL: 'http://localhost:8000/assets/v1.1'
 };
 
 /*
