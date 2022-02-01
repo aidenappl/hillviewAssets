@@ -1,0 +1,33 @@
+<div class="page-wrapper">
+    <div class="center-modal fullCenter">
+        <div class="inputs-container fullXCenter">
+            <div class="input-wrapper">
+                <p>Asset ID</p>
+                <input #assetID type="text" placeholder="The Asset ID..." id="assetID" (keyup.enter)="lookup()">
+            </div>
+            <div class="input-wrapper">
+                <div class="loader" [hidden]="btnValue.length > 0"></div>
+                <input type="submit" value={{btnValue}} (click)="lookup()">
+            </div>
+        </div>
+
+        <div class="device-wrapper" *ngIf="asset">
+            <div class="device-image reg-image" *ngIf="asset" [ngStyle]="{'background-image': 'url('+asset.image_url+')'}"></div>
+            <div class="device-details">
+                <h1>{{asset ? asset.name : "Title"}}</h1>
+                <h2>{{asset ? (asset.active_tab ? "Currently checked out to " + asset.active_tab.user.name : asset.description) : "Subtitle"}}</h2>
+                <a [ngClass]='asset ? (asset.active_tab ? "checkedout" : "checkedin") : ""'>{{asset ? (asset.active_tab ? "Checked Out" : "Available") : ""}}</a>
+            </div>
+        </div>
+        <div class="quick-actions-wrapper" *ngIf="asset && asset.active_tab">
+            <div class="input-wrapper">
+                <div class="loader" [hidden]="btnValue.length > 0"></div>
+                <input type="submit" value="Check In" (click)="checkin()">
+            </div>
+            <div class="input-wrapper">
+                <div class="loader" [hidden]="btnValue.length > 0"></div>
+                <input type="submit" value="Modify" (click)="lookup()">
+            </div>
+        </div>
+</div>
+</div>

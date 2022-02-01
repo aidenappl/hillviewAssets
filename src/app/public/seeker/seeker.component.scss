@@ -1,0 +1,388 @@
+.center-modal {
+    width: 600px;
+    height: 80%;
+}
+
+.check-wrapper {
+    width: 75px;
+    position: relative;
+    height: 75px;
+    margin-top: 50px;
+    background: #3067f6;
+    border-radius: 50%;
+    svg {
+        stroke: white;
+        width: 28px;
+        height: 28px;
+    }
+}
+
+.success-container {
+    width: 100%;
+    height: fit-content;
+    h2 {
+        text-align: center;
+        font-size: 50px;
+        width: 700px;
+        color: #1c222f;
+        margin-top: 40px;
+    }
+    p {
+        font-size: 22px;
+        margin-top: 10px;
+        color: #7d889d;
+        text-align: center;
+        font-weight: 300;
+    }
+}
+
+.device-wrapper {
+    width: calc(100% - 4px);
+    height: 210px;
+    background-color: white;
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+    outline: 2px solid #8e9ec524;
+    .device-image {
+        width: 190px;
+        background-size: cover;
+        height: 190px;
+        background-color: #bec1e53d;
+        border-radius: 20px;
+    }
+    .device-details {
+        width: 55%;
+        margin-left: 30px;
+        padding-top: 15px;
+        h1 {
+            padding-bottom: 3px;
+            font-size: 30px;
+        }
+        h2 {
+            font-weight: 400;
+            font-size: 21px;
+        }
+        a {
+            position: absolute;
+            bottom: 15px;
+            padding: 5px 17px;
+            background: #bdffd5;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            &.checkedout {
+                background: #ffbdbd;
+            }
+            &.available {
+                background: #bdd4ff;
+            }
+        }
+    }
+}
+
+.horizontal-checks {
+    display: flex; 
+    width: 400px;
+    position: relative;
+    justify-content: space-between;
+    padding-top: 70px;
+    .step-object {
+        background: white;
+        border: 2px solid #e4e7eb;
+        border-radius: 50%;
+        width: 50px;
+        transition: .3s;
+        height: 50px;
+        z-index: 10;
+        span {
+            color: #e4e7eb;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            position: absolute;
+        }
+        &.active {
+            border: 2px solid #3067f6;
+            background: #3067f6;
+            span {
+                color: white;
+            }
+        }
+    }
+    .step-hr {
+        width: 90%;
+        overflow: hidden;
+        height: 2px;
+        background: #e4e7eb;
+        .fill {
+            width: calc(100% / 4);
+            height: 2px;
+            transition: .4s;
+            background: #3067f6;
+        }
+    }
+}
+
+.checkbox-wrapper {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    margin-top: 20px;
+    .check-container {
+        width: 40px;
+        height: 40px;
+        border: 2px solid #eceef5;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+    span {
+        left: 50px;
+    }
+}
+
+.header-container {
+    padding: 10px 0px;
+    width: 700px;
+    transition: .3s;
+    h2, p {
+        text-align: center;
+        color: #161c28;
+    }
+    h2 {
+        font-size: 45px;
+        text-align: center;
+    }
+    p {
+        font-size: 22px;
+        margin-top: 10px;
+        color: #7d889d;
+        font-weight: 300;
+    }
+}
+
+.step-wrapper {
+    left: 65%;
+    opacity: 0;
+    transition: .4s;
+    pointer-events: none;
+    &.active{
+        transition-delay: .1s;
+        left: 50%;
+        pointer-events: all;
+        opacity: 1;
+    }
+    &.out {
+        left: 35%;
+        pointer-events: none;
+        opacity: 0;
+    }
+}
+
+.select-input {
+    width: 100%;
+    height: fit-content;
+    input {
+        width: 100%;
+        height: 50px;
+        border: 2px solid #eceef5;
+        outline: none;
+        background: transparent;
+        border-radius: 10px;
+        color: #66729369;
+        font-weight: 500;
+        font-size: 15px;
+        cursor: pointer;
+        &.selected {
+            background: #a0a7bbb5;
+            border: 2px solid #2f67f500;
+            color: white;
+        }
+    }
+    &:not(:first-child) {
+        margin-top: 15px;
+    }
+}
+
+.horizontal-square-select {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: space-between;
+    .square-select {
+        width: 240px;
+        height: 240px;
+        border: 2px solid #f0f2f8;
+        cursor: pointer;
+        border-radius: 15px;
+        padding: 35px;
+        transition: .2s;
+        &.active {
+            border: 2px solid #3067f6;
+            .sq-logo svg {
+                stroke: #3067f6;
+            }
+        }
+        .sq-logo {
+            width: 100%;
+            height: fit-content;
+            svg {
+                width: 35px;
+                transition: .2s;
+                height: 35px;
+                stroke: #354259;
+            }
+        }
+        .sq-text {
+            width: calc(100% - 60px);
+            height: fit-content;
+            position: absolute;
+            bottom: 35px;
+            h5 {
+                color: #2b3545;
+                font-size: 20px;
+                padding-bottom: 13px;
+            }
+            p {
+                color: #7d889d;
+                letter-spacing: 0.5px;
+                font-weight: 400;
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+.inputs-container {
+    padding-top:70px;
+    position: relative;
+    width: 550px;
+    transition: .3s;
+}
+
+.input-wrapper {
+    width: 100%;
+    height: fit-content;
+    p {
+        padding-bottom: 11px;
+        color: #161c28;
+        font-weight: 500;
+    }
+    input[type='date'] {
+        width: 100%;
+        height: 58px;
+        outline: none;
+        border: 2px solid #f3f4f6;
+        border-radius: 10px;
+        font-size: 16px;
+        padding: 20px;
+        &::placeholder {
+            color: #b4bac3;
+        }
+        &:focus {
+            border: 2px solid #95b6f7;
+        }
+    }
+    textarea {
+        width: 100%;
+        height: 200px;
+        outline: none;
+        border: 2px solid #f3f4f6;
+        border-radius: 10px;
+        font-size: 16px;
+        padding-left: 20px;
+        padding-top: 20px;
+        resize: none;
+        &::placeholder {
+            color: #b4bac3;
+        }
+        &:focus {
+            border: 2px solid #95b6f7;
+        }
+    }
+    input[type='text'] {
+        width: 100%;
+        height: 58px;
+        outline: none;
+        border: 2px solid #f3f4f6;
+        border-radius: 10px;
+        font-size: 16px;
+        padding-left: 20px;
+        &::placeholder {
+            color: #b4bac3;
+        }
+        &:focus {
+            border: 2px solid #95b6f7;
+        }
+    }
+    input[type='submit'] {
+        width: 100%;
+        height: 60px;
+        outline: none;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        background: #3067f6;
+        color: white;
+        cursor: pointer;
+    }
+    &:not(:first-child) {
+        margin-top: 30px;
+    }
+}
+
+.quick-actions-wrapper {
+    display: flex;
+    width: 100%;
+    height: 80px;
+    margin-top: 20px;
+    justify-content: space-between;
+    .input-wrapper {
+        width: 48%;
+        position: relative;
+        transform: translateY(-50%);
+        top: 50%;
+        margin-top: 0px !important;
+        input {
+            height: 50px;
+        }
+    }
+}
+
+.device-wrapper {
+    margin-top: 50px;
+}
+
+.logo {
+    width: 250px;
+    height: 100px;
+    background-image: url('/assets/logos/hillviewTVLogo-Primary.png');
+}
+
+.footer {
+    width: calc(100% - 50px);
+    height: fit-content;
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    p, a {
+        color: #7d889d3d;
+        font-weight: 200;
+    }
+    a {
+        font-weight: 500;
+    }
+    button {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        width: fit-content;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        color: #e1e4e9;
+        font-weight: 600;
+        cursor: pointer;
+    }
+}
