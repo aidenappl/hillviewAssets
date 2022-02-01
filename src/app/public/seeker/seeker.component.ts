@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { RequestService } from 'src/services/http/request.service';
 
@@ -7,7 +7,7 @@ import { RequestService } from 'src/services/http/request.service';
   templateUrl: './seeker.component.html',
   styleUrls: ['./seeker.component.scss']
 })
-export class SeekerComponent implements OnInit {
+export class SeekerComponent implements OnInit, AfterViewInit {
 
   @ViewChild('assetID', { static: false }) assetIDInput!: ElementRef;
 
@@ -20,6 +20,10 @@ export class SeekerComponent implements OnInit {
   public asset: any = null;
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    this.assetIDInput.nativeElement.focus();
   }
 
   focusInput(id: string): void {
