@@ -64,6 +64,10 @@ export class LanderComponent implements OnInit, AfterViewInit {
     window.location.href = `https://team.hillview.tv/login`;
   }
 
+  navigateToSeeker(): void {
+    window.location.href = `/seeker`;
+  }
+
   selectLocationAction(input: string): void {
     this.locationAction = input;
   }
