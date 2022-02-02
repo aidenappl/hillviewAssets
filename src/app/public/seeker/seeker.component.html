@@ -17,7 +17,7 @@
         <div class="device-wrapper" *ngIf="asset">
             <div class="device-image reg-image" *ngIf="asset" [ngStyle]="{'background-image': 'url('+asset.image_url+')'}"></div>
             <div class="device-details">
-                <h1>{{asset ? asset.name : "Title"}}</h1>
+                <h1>{{asset ? asset.name + " - " + asset.identifier : "Title"}}</h1>
                 <h2>{{asset ? (asset.active_tab ? "Currently checked out to " + asset.active_tab.user.name : asset.description) : "Subtitle"}}</h2>
                 <a [ngClass]='asset ? (asset.active_tab ? "checkedout" : "checkedin") : ""'>{{asset ? (asset.active_tab ? "Checked Out" : "Available") : ""}}</a>
             </div>
