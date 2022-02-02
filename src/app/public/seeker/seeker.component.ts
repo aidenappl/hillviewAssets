@@ -34,6 +34,7 @@ export class SeekerComponent implements OnInit, AfterViewInit {
     try {
       let asset = await this.getAsset();
       this.asset = asset
+      this.assetIDInput.nativeElement.value = '';
       console.log(asset);
     } catch (error) {
       console.error(error);
