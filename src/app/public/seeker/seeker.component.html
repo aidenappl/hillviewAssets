@@ -9,6 +9,9 @@
                 <div class="loader" [hidden]="btnValue.length > 0"></div>
                 <input type="submit" value={{btnValue}} (click)="lookup()">
             </div>
+            <div class="input-wrapper">
+                <input type="submit" value="Navigate to POS" (click)="navigateToPOS()">
+            </div>
         </div>
 
         <div class="device-wrapper" *ngIf="asset">

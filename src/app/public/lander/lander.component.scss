@@ -349,10 +349,13 @@
     a {
         font-weight: 500;
     }
-    button {
+    .btns {
         position: absolute;
         right: 0px;
         top: 0px;
+        display: flex;
+    }
+    button {
         width: fit-content;
         background: transparent;
         border: none;

@@ -30,6 +30,10 @@ export class SeekerComponent implements OnInit, AfterViewInit {
     document.getElementById(id)!.focus();
   }
 
+  navigateToPOS(): void {
+    window.location.href = '/pos'
+  }
+
   async lookup(): Promise<void> {
     try {
       let asset = await this.getAsset();
