@@ -20,8 +20,20 @@
 .dropdown-wrapper {
     width: 100%;
     height: fit-content;
+    position: absolute;
+    z-index: 10;
+    background: white;
+    border: 2px solid #dcdcde;
+    border-radius: 7px;
+    margin-top: 10px;
+    box-shadow: 0px 0px 10px 0px #a9afd04a;
     li {
         cursor: pointer;
+        list-style-type: none;
+        padding: 10px 0px;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
 
