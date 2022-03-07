@@ -35,12 +35,56 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
   public btnValue = 'Next Step';
 
+  public results: any = [];
+
   constructor(private request: RequestService) {}
 
   ngOnInit(): void {
     document.addEventListener('keypress', (e: any) => {
       this.logKey(e);
     });
+  }
+
+  async lookupKeyup(event: any): Promise<void> {
+    try {
+      if (event.keyCode === 13) {
+        // Select
+      }
+  
+      let val = event.target.value;
+  
+      if (val.length === 0) {
+        this.results = []
+        return;
+      }
+
+      const response = await this.lookupMobileUserRequest(val);
+
+      const slicedArray = response.slice(0, 5);
+
+      console.log(slicedArray)
+
+      this.results = slicedArray;
+  
+    } catch (error) {
+      console.error(error);   
+    }
+  }
+
+  selectResult(res: any): void {
+    this.studentIDInput.nativeElement.value = res.identifier;
+    this.results = [];
+  }
+
+  async lookupMobileUserRequest(search: string): Promise<any> {
+    try {
+      const response = await this.request.get(
+        `${environment.CORE_API}/search/mobileUsers?search=${search}`
+      );
+      return response?.body;
+    } catch (error) {
+      throw error;
+    }
   }
 
   reload(): void {

@@ -17,6 +17,14 @@
     }
 }
 
+.dropdown-wrapper {
+    width: 100%;
+    height: fit-content;
+    li {
+        cursor: pointer;
+    }
+}
+
 .success-container {
     width: 100%;
     height: fit-content;
