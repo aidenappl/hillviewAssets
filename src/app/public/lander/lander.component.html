@@ -34,10 +34,10 @@
             <div class="inputs-container fullXCenter">
                 <div class="input-wrapper">
                     <p>Student ID</p>
-                    <input #studentID type="text" placeholder="Lookup Student ID" (keyup)="lookupKeyup($event)" (keyup.enter)="focusInput('assetID')">
+                    <input #studentID type="text" placeholder="Lookup Student ID" (keyup)="lookupKeyup($event)">
                 </div>
                 <div class="dropdown-wrapper" *ngIf="results.length > 0">
-                    <ul>
+                    <ul id="dropdown-holder">
                         <li *ngFor="let res of results" (click)="selectResult(res)">{{res.name}}</li>
                     </ul>
                 </div>

@@ -37,6 +37,8 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
   public results: any = [];
 
+  private selectedRes = 0;
+
   constructor(private request: RequestService) {}
 
   ngOnInit(): void {
@@ -45,11 +47,59 @@ export class LanderComponent implements OnInit, AfterViewInit {
     });
   }
 
+  focusNextResult(): void {
+    if (this.results.length === 0 || this.selectedRes === this.results.length) {
+      return;
+    }
+    var elements = document.getElementById('dropdown-holder')!.children;
+    if (this.selectedRes != 0) {
+      elements.item(this.selectedRes - 1)?.classList.remove('hover');
+    }
+    elements.item(this.selectedRes)?.classList.add('hover');
+    this.selectedRes++;
+  }
+
+  focusPrev(): void {
+    if (this.selectedRes === 0 || this.results.length === 0) {
+      return;
+    }
+    var elements = document.getElementById('dropdown-holder')!.children;
+    elements.item(this.selectedRes - 1)?.classList.remove('hover');
+    elements.item(this.selectedRes - 2)?.classList.add('hover');
+    this.selectedRes--;
+  }
+
+  selectFocuedResult(): void {
+    var elements = document.getElementById('dropdown-holder')!.children;
+    (elements.item(this.selectedRes - 1) as any).click();
+  }
+
   async lookupKeyup(event: any): Promise<void> {
     try {
+      if (event.keyCode === 40) {
+        // Down Arrow
+        this.focusNextResult();
+        return
+      }
+
+      if (event.keyCode === 38) {
+        // Down Arrow
+        this.focusPrev();
+        return
+      }
+
       if (event.keyCode === 13) {
         // Select
+        if (this.results.length == 1) {
+          this.selectResult(this.results[0]);
+        } else {
+          this.selectFocuedResult()
+        }
+        this.focusInput('assetID');
+        return;
       }
+
+      this.selectedRes = 0;
   
       let val = event.target.value;
   
@@ -61,8 +111,6 @@ export class LanderComponent implements OnInit, AfterViewInit {
       const response = await this.lookupMobileUserRequest(val);
 
       const slicedArray = response.slice(0, 5);
-
-      console.log(slicedArray)
 
       this.results = slicedArray;
   
