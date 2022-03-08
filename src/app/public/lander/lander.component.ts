@@ -39,12 +39,18 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
   private selectedRes = 0;
 
+  public selector = 'single'
+
   constructor(private request: RequestService) {}
 
   ngOnInit(): void {
     document.addEventListener('keypress', (e: any) => {
       this.logKey(e);
     });
+  }
+
+  selectorChange(input: string): void {
+    this.selector = input;
   }
 
   focusNextResult(): void {

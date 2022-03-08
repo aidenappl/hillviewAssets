@@ -32,6 +32,14 @@
                 <p>Get your Student ID and Asset tag ready!</p>
             </div>
             <div class="inputs-container fullXCenter">
+                <div class="selector-switch">
+                    <div class="input-wrapper" [class.active]='selector === "single"'>
+                        <input type="submit" value="Single Item" (click)="selectorChange('single')">
+                    </div>
+                    <div class="input-wrapper" [class.active]='selector === "bulk"'>
+                        <input type="submit" value="Multiple Items" (click)="selectorChange('bulk')">
+                    </div>
+                </div>
                 <div class="input-wrapper">
                     <p>Student ID</p>
                     <input #studentID type="text" placeholder="Lookup Student ID" (keyup)="lookupKeyup($event)">
