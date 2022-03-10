@@ -29,17 +29,9 @@
         <div class="step-wrapper fullXCenter" [class.out]="step > 1" [class.active]="step == 1">
             <div class="header-container">
                 <h2>Welcome! First things first...</h2>
-                <p>Get your Student ID and Asset tag ready!</p>
+                <p>Get your Student ID ready to go!</p>
             </div>
             <div class="inputs-container fullXCenter">
-                <div class="selector-switch">
-                    <div class="input-wrapper" [class.active]='selector === "single"'>
-                        <input type="submit" value="Single Item" (click)="selectorChange('single')">
-                    </div>
-                    <div class="input-wrapper" [class.active]='selector === "bulk"'>
-                        <input type="submit" value="Multiple Items" (click)="selectorChange('bulk')">
-                    </div>
-                </div>
                 <div class="input-wrapper">
                     <p>Student ID</p>
                     <input #studentID type="text" placeholder="Lookup Student ID" (keyup)="lookupKeyup($event)">
@@ -50,10 +42,6 @@
                     </ul>
                 </div>
                 <div class="input-wrapper">
-                    <p>Asset ID</p>
-                    <input #assetID type="text" placeholder="The Asset ID..." id="assetID" (keyup.enter)="next()">
-                </div>
-                <div class="input-wrapper">
                     <div class="loader" [hidden]="btnValue.length > 0"></div>
                     <input type="submit" value={{btnValue}} (click)="next()">
                 </div>
@@ -62,22 +50,48 @@
         <!-- Step 2 -->
         <div class="step-wrapper fullXCenter" [class.out]="step > 2" [class.active]="step == 2">
             <div class="header-container">
-                <h2>Now select an option...</h2>
-                <p>What are you trying to accomplish?</p>
+                <h2>Scan your items</h2>
+                <p>Grab the assets and check them out or in?</p>
             </div>
             <div class="inputs-container fullXCenter">
-                <div class="select-input">
-                    <input *ngIf="asset && !asset.active_tab" type="button" value="Check Out" [class.selected]="selectedAction === 'checkout'" id="checkout" (click)="setSelectAction($event)">
+                <div class="input-wrapper assetSID bulk">
+                    <p>Asset ID</p>
+                    <input #assetID type="text" placeholder="The Asset ID..." id="assetID" (keyup.enter)="addToCart()">
+                    <div class="plus-btn" (click)="addToCart()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
                 </div>
-                <div class="select-input">
-                    <input *ngIf="asset && asset.active_tab && (asset.active_tab.associated_user == user.id)" type="button" value="Check In" [class.selected]="selectedAction === 'checkin'" id="checkin" (click)="setSelectAction($event)">
+
+                <div class="cart" *ngIf="cart.length > 0">
+                    <h2>Your Cart</h2>
+                    <div class="item" *ngFor="let item of cart">
+                        <div class="icon reg-image" [ngStyle]="{'background-image': 'url('+item.image_url+')'}"></div>
+                        <div class="info fullYCenter">
+                            <h3>{{item.name}}</h3>
+                            <p [class.warn]="item.active_tab" [class.alert]="item.active_tab && item.active_tab.user.identifier === studentIDInput.nativeElement.value">{{item.active_tab ? (item.active_tab.user.identifier === studentIDInput.nativeElement.value ? "Pending Check In" : "Unavailable") : 'Available'}}
+                                <a (click)="viewAssetHistory(item)" *ngIf="item.active_tab && item.active_tab.user.identifier !== studentIDInput.nativeElement.value">View Info</a>
+                            </p>
+                        </div>
+                        <div class="remove fullYCenter" (click)="removeCartItem(item)" *ngIf="!(item.active_tab && item.active_tab.user.identifier === studentIDInput.nativeElement.value)">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                        <div class="check-in fullYCenter" *ngIf="(item.active_tab && item.active_tab.user.identifier === studentIDInput.nativeElement.value)">
+                            <input type="button" (click)="checkinAsset(item)" value="{{!item.showCheckinLoader ? 'Check In' : ''}}">
+                            <div class="loader" [hidden]="!item.showCheckinLoader"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="select-input">
-                    <input type="button" value="Lookup" [class.selected]="selectedAction === 'lookup'" id="lookup" (click)="setSelectAction($event)">
-                </div>
-                <div class="input-wrapper">
+
+                <div class="input-wrapper" style="height: 60px;">
                     <div class="loader" [hidden]="btnValue.length > 0"></div>
-                    <input type="submit" value={{btnValue}} (click)="next()">
+                    <input type="submit" value={{btnValue}} (click)="checkout()">
+                </div>
+                <div class="input-wrapper sec">
+                    <input type="submit" value='Restart' (click)="reload()">
                 </div>
             </div>
         </div>
@@ -132,9 +146,12 @@
                 </div>
 
                 <!-- Step 3 Submit Btn -->
-                <div class="input-wrapper">
+                <div class="input-wrapper" *ngIf="selectedAction != 'lookup'">
                     <div class="loader" [hidden]="btnValue.length > 0">Loading...</div>
                     <input type="submit" value={{btnValue}} (click)="done()">
+                </div>
+                <div class="input-wrapper" *ngIf="selectedAction === 'lookup'">
+                    <input type="submit" value="Go Back" (click)="back()">
                 </div>
             </div>
         </div>

@@ -35,11 +35,15 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
   public btnValue = 'Next Step';
 
+  public checkinBtn = 'Check In';
+
   public results: any = [];
 
   private selectedRes = 0;
 
   public selector = 'single'
+
+  public cart: any = [];
 
   constructor(private request: RequestService) {}
 
@@ -49,8 +53,39 @@ export class LanderComponent implements OnInit, AfterViewInit {
     });
   }
 
+  removeCartItem(item: any): void {
+    this.cart.splice(this.cart.indexOf(item), 1);
+  }
+
   selectorChange(input: string): void {
     this.selector = input;
+  }
+
+  async addToCart(): Promise<void> {
+    if (this.assetIDInput.nativeElement.value.length === 0) {
+      return;
+    }
+
+    let val = this.assetIDInput.nativeElement.value
+
+    let obj = this.cart.find((item: any) => item.identifier === val);
+
+    if (obj != undefined) {
+      window.alert('Asset already in cart');
+      this.assetIDInput.nativeElement.value = ""
+      return;
+    }
+
+    let asset = await this.getAsset(val);
+    
+    this.assetIDInput.nativeElement.value = ""
+
+    if (asset === null) {
+      window.alert("Asset not found");
+      return
+    }
+
+    this.cart.unshift(asset);
   }
 
   focusNextResult(): void {
@@ -98,6 +133,7 @@ export class LanderComponent implements OnInit, AfterViewInit {
         // Select
         if (this.results.length == 1) {
           this.selectResult(this.results[0]);
+          this.next();
         } else {
           this.selectFocuedResult()
         }
@@ -154,8 +190,14 @@ export class LanderComponent implements OnInit, AfterViewInit {
       this.back();
     }
     if (e.code === 'Enter' && (this.step === 2 || this.step === 3)) {
-      this.next();
+      // this.next();
     }
+  }
+
+  viewAssetHistory(asset: any): void {
+    this.asset = asset
+    this.selectedAction = 'lookup';
+    this.next();
   }
 
   navigateToLogin(): void {
@@ -209,31 +251,33 @@ export class LanderComponent implements OnInit, AfterViewInit {
       if (step === 1) {
         // Check Step 1 Validators
         const studentID = this.studentIDInput.nativeElement.value;
-        const assetID = this.assetIDInput.nativeElement.value;
 
         if (studentID.length === 0) {
           return { valid: false, message: 'missing studentID' };
         }
-        if (assetID.length === 0) {
-          return { valid: false, message: 'missing assetID' };
-        }
 
         const validUser = await this.validUser(studentID);
-        const validAsset = await this.validAsset(assetID);
 
         if (!validUser) {
           return { valid: false, message: 'invalid studentID' };
-        }
-        if (!validAsset) {
-          return { valid: false, message: 'invalid assetID' };
         }
 
         return { valid: true, message: '' };
       }
       if (step === 2) {
+        if (this.cart.length === 0) {
+          return { valid: false, message: 'no assets in cart' };
+        }
         // Check Step 2 Validators
         if (!this.isOfTypeActions(this.selectedAction)) {
           return { valid: false, message: 'not a valid selected action' };
+        }
+
+        if (this.selectedAction !== 'lookup') {
+          if (this.cart.filter((item: any) => item.active_tab != null).length > 0) {
+            return { valid: false, message: 'there are checked out items in your cart' };
+          }
+          this.selectedAction ='checkout';
         }
 
         return { valid: true, message: '' };
@@ -259,6 +303,11 @@ export class LanderComponent implements OnInit, AfterViewInit {
     } catch (error) {
       throw error;
     }
+  }
+
+  checkout(): void {
+    this.selectedAction = 'checkout';
+    this.next();
   }
 
   async next(): Promise<void> {
@@ -300,10 +349,7 @@ export class LanderComponent implements OnInit, AfterViewInit {
       if (this.step === 1) {
         // Step 1 Data Runners
         let user = await this.getUser();
-        let asset = await this.getAsset();
         this.user = user;
-        this.asset = asset;
-        console.log(user, asset);
         return;
       }
     } catch (error) {
@@ -322,11 +368,15 @@ export class LanderComponent implements OnInit, AfterViewInit {
     }
   }
 
-  async getAsset(): Promise<any> {
+  async getAsset(tag: string): Promise<any> {
     try {
+      if (tag === "") {
+        tag = this.assetIDInput.nativeElement.value;
+      }
       const response: any = await this.request.get(
-        `${environment.API_URL}/read/assetByTag/${this.assetIDInput.nativeElement.value}`
+        `${environment.API_URL}/read/assetByTag/` + tag
       );
+      console.log(response.body)
       return response.body;
     } catch (error) {
       throw error;
@@ -334,6 +384,9 @@ export class LanderComponent implements OnInit, AfterViewInit {
   }
 
   focusNextInput(step: number): void {
+    if (step === 2) {
+      this.assetIDInput.nativeElement.focus();
+    }
     if (step === 3 && this.selectedAction === 'checkin') {
       this.notesInput.nativeElement.focus();
     }
@@ -376,35 +429,63 @@ export class LanderComponent implements OnInit, AfterViewInit {
         }, 200);
         return;
       }
-      let data: any = {
-        asset_id: this.asset.id,
-        user_id: this.user.id,
-      };
-      if (this.selectedAction === 'checkout') {
-        data.offsite = this.locationAction === 'offsite';
-
-        let mydate: any = this.duration.nativeElement.value;
-        mydate = mydate.split('-');
-        var newDate = new Date(mydate[0], mydate[1], mydate[2]);
-        console.log(newDate.getTime());
-        data.duration = newDate;
-      }
-      if (this.selectedAction === 'checkin') {
-        data.notes = this.notesInput.nativeElement.value.trim();
-      }
-      this.btnValue = '';
-      const response: any = await this.request.post(
-        `${environment.API_URL}/${this.selectedAction}`,
-        data
-      );
-      if (response.status === 200) {
-        this.next();
-      } else {
-        this.btnValue = 'Done!';
-        window.alert('Something went wrong!');
-      }
+      this.submitCart()
     } catch (error) {
       throw error;
+    }
+  }
+
+  async checkinAsset(item: any): Promise<void> {
+    try {
+      let data: any = {
+        user_id: this.user.id,
+        asset_id: item.id,
+      };
+
+      this.cart[this.cart.indexOf(item)].showCheckinLoader = true;
+
+      const response: any = await this.request.post(
+        `${environment.API_URL}/checkin`,
+        data
+      );
+
+      if (response.status === 200) {
+        setTimeout(() => {
+          this.removeCartItem(item)
+        }, 400);
+      }
+    } catch (error) {
+      window.alert('Something went wrong!');
+      throw error
+    }
+  }
+
+  async submitCart(): Promise<void> {
+    try {
+      let data: any = {
+        user_id: this.user.id,
+        offsite: this.locationAction === 'offsite'
+      };
+
+      let mydate: any = this.duration.nativeElement.value;
+      mydate = mydate.split('-');
+      var newDate = new Date(mydate[0], mydate[1], mydate[2]);
+      console.log(newDate.getTime());
+      data.duration = newDate;
+
+      this.btnValue = '';
+
+      this.cart.forEach(async(item: any) => {
+        data.asset_id = item.id;
+        const response: any = await this.request.post(
+          `${environment.API_URL}/checkout`,
+          data
+        );
+      })
+      this.next();
+    } catch (error) {
+      window.alert('Something went wrong!');
+      throw error
     }
   }
 }

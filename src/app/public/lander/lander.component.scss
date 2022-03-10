@@ -415,3 +415,121 @@
         }
     }
 }
+
+.assetSID {
+    &.bulk {
+        input {
+            width: calc(100% - 50px) !important;
+        }
+        .plus-btn {
+            opacity: 1;
+        }
+    }
+    .plus-btn {
+        width: 32px;
+        height: 32px;
+        position: absolute;
+        top: 43px;
+        right: 0px;
+        cursor: pointer;
+        background: #f3f4f6;
+        padding: 5px;
+        border-radius: 4px;
+        opacity: 0;
+        transition: .3s;
+        z-index: 1;
+    }
+    input {
+        transition: .3s;
+        z-index: 2;
+        position: relative;
+    }
+}
+
+.input-wrapper.sec {
+    margin-top: 20px !important;
+    input {
+        background: #34363d !important;
+        color: #f4f4f4 !important;
+        font-weight: 500 !important;
+    }
+}
+
+.cart {
+    width: 100%;
+    height: fit-content; 
+    max-height: 32vh;
+    overflow-y: auto;
+    margin-top: 40px;
+    box-shadow: 0px 0px 10px 0px #00000008;
+    padding: 20px;
+    border-radius: 6px;
+    border: 2px solid #f3f4f6;
+    .check-in {
+        right: 10px;
+        height: 40px;
+        input {
+            width: 130px;
+            height: 40px;
+            background: #2f67f5;
+            border: none;
+            color: white;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+        .loader {
+            width: 20px;
+            height: 20px;
+            left: 57px;
+            top: 10px;
+        }
+    }
+    h2 {
+        padding-bottom: 10px;
+        font-weight: 600;
+        font-size: 23px;
+        color: #36435d;
+    }
+    .item {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        &:not(:first-child) {
+            margin-top: 20px;
+        }
+        .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            background-size: cover;
+        }
+        .info {
+            margin-left: 20px;
+            position: relative;
+            height: fit-content;
+            a {
+                font-size: 15px;
+                margin-left: 10px;
+                font-weight: 500;
+                color: #7a7f89;
+            }
+            p {
+                &.warn {
+                    color: #f64954;
+                    font-weight: 600;
+                }
+                &.alert {
+                    color: #f69449;
+                    font-weight: 600;
+                }
+            }
+        }
+        .remove {
+            right: 10px;
+            cursor: pointer;
+            width: 27px;
+            height: 27px;
+        }
+    }
+}
