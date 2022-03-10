@@ -1,4 +1,13 @@
 <div class="page-wrapper">
+
+    <div class="notes-wrapper fullCenter" *ngIf="notesDisp && asset.metadata.notes">
+        <h4>Notes</h4>
+        <p>{{asset.metadata.notes}}</p>
+        <input type="button" value="Acknowledge" (click)="toggleNotes(false)">
+    </div>
+
+    <div [class.active]="notesDisp" class="fs-splash"></div>
+
     <div class="footer">
         <p>Built by <a target="_blank" href="https://github.com/aidenappl">Aiden Appleby.</a></p>
         <div class="btns">
@@ -70,9 +79,11 @@
                         <div class="icon reg-image" [ngStyle]="{'background-image': 'url('+item.image_url+')'}"></div>
                         <div class="info fullYCenter">
                             <h3>{{item.name}}</h3>
-                            <p [class.warn]="item.active_tab" [class.alert]="item.active_tab && item.active_tab.user.identifier === studentIDInput.nativeElement.value">{{item.active_tab ? (item.active_tab.user.identifier === studentIDInput.nativeElement.value ? "Pending Check In" : "Unavailable") : 'Available'}}
+                            <p *ngIf="item.status.id === 1" [class.warn]="item.active_tab" [class.alert]="item.active_tab && item.active_tab.user.identifier === studentIDInput.nativeElement.value">{{item.active_tab ? (item.active_tab.user.identifier === studentIDInput.nativeElement.value ? "Pending Check In" : "Unavailable") : 'Available'}}
                                 <a (click)="viewAssetHistory(item)" *ngIf="item.active_tab && item.active_tab.user.identifier !== studentIDInput.nativeElement.value">View Info</a>
                             </p>
+
+                            <p class="alert" *ngIf="item.status.id != 1">{{item.status.name}} <a (click)="viewAssetHistory(item)">View Alert</a></p>
                         </div>
                         <div class="remove fullYCenter" (click)="removeCartItem(item)" *ngIf="!(item.active_tab && item.active_tab.user.identifier === studentIDInput.nativeElement.value)">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -141,16 +152,21 @@
                     <div class="device-details">
                         <h1>{{asset ? asset.name : "Title"}}</h1>
                         <h2>{{asset ? (asset.active_tab ? "Currently checked out to " + asset.active_tab.user.name : asset.description) : "Subtitle"}}</h2>
-                        <a (click)="back()" [ngClass]='asset ? (asset.active_tab ? "checkedout" : "checkedin") : ""'>{{asset ? (asset.active_tab ? "Checked Out" : "Available") : ""}}</a>
+                        <a *ngIf="asset.status.id === 1" (click)="back()" [ngClass]='asset ? (asset.active_tab ? "checkedout" : "checkedin") : ""'>{{asset ? (asset.active_tab ? "Checked Out" : "Available") : ""}}</a>
+                        <a class="warn" (click)="toggleNotes()" *ngIf="asset.status.id != 1">{{asset.status.name}}</a>
                     </div>
                 </div>
 
                 <!-- Step 3 Submit Btn -->
+                <div class="input-wrapper" *ngIf="selectedAction === 'lookup'">
+                    <input type="submit" (click)="toggleNotes(true)" value="View Notes">
+                </div>
+
                 <div class="input-wrapper" *ngIf="selectedAction != 'lookup'">
                     <div class="loader" [hidden]="btnValue.length > 0">Loading...</div>
                     <input type="submit" value={{btnValue}} (click)="done()">
                 </div>
-                <div class="input-wrapper" *ngIf="selectedAction === 'lookup'">
+                <div class="input-wrapper sec" *ngIf="selectedAction === 'lookup'">
                     <input type="submit" value="Go Back" (click)="back()">
                 </div>
             </div>

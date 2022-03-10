@@ -33,6 +33,8 @@ export class LanderComponent implements OnInit, AfterViewInit {
   public user: any = null;
   public asset: any = null;
 
+  public notesDisp = false;
+
   public btnValue = 'Next Step';
 
   public checkinBtn = 'Check In';
@@ -59,6 +61,10 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
   selectorChange(input: string): void {
     this.selector = input;
+  }
+
+  toggleNotes(bool?: boolean): void {
+    this.notesDisp = bool === undefined ? !this.notesDisp : bool;
   }
 
   async addToCart(): Promise<void> {
@@ -275,7 +281,7 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
         if (this.selectedAction !== 'lookup') {
           if (this.cart.filter((item: any) => item.active_tab != null).length > 0) {
-            return { valid: false, message: 'there are checked out items in your cart' };
+            return { valid: false, message: 'there are unavailable items in your cart' };
           }
           this.selectedAction ='checkout';
         }
@@ -306,6 +312,16 @@ export class LanderComponent implements OnInit, AfterViewInit {
   }
 
   checkout(): void {
+
+    if (this.cart.filter((item: any) => item.status.id != 1).length > 0) {
+      let prmt = window.confirm("There are items in your cart that include warnings. Do you want to continue?");
+      if (prmt) {
+        // Do Nothing
+      } else {
+        return;
+      }
+    }
+
     this.selectedAction = 'checkout';
     this.next();
   }
