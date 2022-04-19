@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { RequestService } from 'src/services/http/request.service';
-
+import * as dayjs from 'dayjs'
 @Component({
   selector: 'app-seeker',
   templateUrl: './seeker.component.html',
@@ -37,6 +37,8 @@ export class SeekerComponent implements OnInit, AfterViewInit {
   async lookup(): Promise<void> {
     try {
       let asset = await this.getAsset();
+      let assetHistory = await this.getAssetHistory();
+      asset.history = assetHistory;
       this.asset = asset
       this.assetIDInput.nativeElement.value = '';
       console.log(asset);
@@ -53,6 +55,29 @@ export class SeekerComponent implements OnInit, AfterViewInit {
       return response.body;
     } catch (error) {
       throw error;
+    }
+  }
+
+  async getAssetHistory(): Promise<any> {
+    try {
+      const response: any = await this.request.get(
+        `${environment.API_URL}/read/assetCheckoutHistory?tag=${this.assetIDInput.nativeElement.value}`
+      )
+
+      response.body.forEach((his: any) => {
+        his.formatted = {}
+
+        if (his.time_in) {
+          his.formatted.time_in = dayjs(his.time_in).format('MMM D, h:mm a');
+        } else {
+          his.formatted.time_in = 'Checked Out'
+        }
+        his.formatted.time_out = dayjs(his.time_out).format('MMM D, h:mm a');
+      })
+      
+      return response.body;
+    } catch (error) {
+      throw error
     }
   }
 

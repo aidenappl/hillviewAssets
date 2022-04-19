@@ -22,6 +22,19 @@
                 <a [ngClass]='asset ? (asset.active_tab ? "checkedout" : "checkedin") : ""'>{{asset ? (asset.active_tab ? "Checked Out" : "Available") : ""}}</a>
             </div>
         </div>
+        <div *ngIf="asset" class="device-checkout-history">
+            <h2 style="margin-top: 30px;">Checkout History</h2>
+            <div class="checkout-history-wrapper">
+                <div class="checkout-history-item" *ngFor="let history of asset.history">
+                    <div class="checkout-history-item-wrapper fullYCenter">
+                        <div class="checkout-history-item-details">
+                            <h3>{{history.user.name}}</h3>
+                            <h4><b>Time Out:</b> {{history.formatted.time_out}} <b>Time In:</b> {{history.formatted.time_in}}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="quick-actions-wrapper" *ngIf="asset && asset.active_tab">
             <div class="input-wrapper">
                 <div class="loader" [hidden]="btnValue.length > 0"></div>

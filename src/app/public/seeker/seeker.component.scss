@@ -386,3 +386,26 @@
         cursor: pointer;
     }
 }
+
+.checkout-history-item {
+    width: 100%;
+    height: 75px;
+    background: #f5f6f9;
+    border-radius: 5px;
+    border: 2px solid #f3f4f8;
+    &:not(:first-child) {
+        margin-top: 10px;
+    }
+    .checkout-history-item-wrapper {
+        width: 100%;
+        height: fit-content;
+        padding-left: 20px;
+        h3 {
+            font-weight: 500;
+        }
+        h4 {
+            font-weight: 400;
+            padding-top: 5px;
+        }
+    }
+}
