@@ -1,16 +1,14 @@
 <div class="page-wrapper">
+    <input type="submit" class="pos-button" value="Navigate to POS" (click)="navigateToPOS()">
     <div class="center-modal fullCenter">
         <div class="inputs-container fullXCenter">
             <div class="input-wrapper">
                 <p>Asset ID</p>
-                <input #assetID type="text" placeholder="The Asset ID..." id="assetID" (keyup.enter)="lookup()">
+                <input #assetID type="number" placeholder="The Asset ID..." id="assetID" (keyup.enter)="lookup()">
             </div>
             <div class="input-wrapper">
                 <div class="loader" [hidden]="btnValue.length > 0"></div>
                 <input type="submit" value={{btnValue}} (click)="lookup()">
-            </div>
-            <div class="input-wrapper">
-                <input type="submit" value="Navigate to POS" (click)="navigateToPOS()">
             </div>
         </div>
 
@@ -22,27 +20,23 @@
                 <a [ngClass]='asset ? (asset.active_tab ? "checkedout" : "checkedin") : ""'>{{asset ? (asset.active_tab ? "Checked Out" : "Available") : ""}}</a>
             </div>
         </div>
-        <div *ngIf="asset" class="device-checkout-history">
-            <h2 style="margin-top: 30px;">Checkout History</h2>
-            <div class="checkout-history-wrapper">
-                <div class="checkout-history-item" *ngFor="let history of asset.history">
-                    <div class="checkout-history-item-wrapper fullYCenter">
-                        <div class="checkout-history-item-details">
-                            <h3>{{history.user.name}}</h3>
-                            <h4><b>Time Out:</b> {{history.formatted.time_out}} <b>Time In:</b> {{history.formatted.time_in}}</h4>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="quick-actions-wrapper" *ngIf="asset && asset.active_tab">
             <div class="input-wrapper">
                 <div class="loader" [hidden]="btnValue.length > 0"></div>
                 <input type="submit" value="Check In" (click)="checkin()">
             </div>
-            <div class="input-wrapper">
-                <div class="loader" [hidden]="btnValue.length > 0"></div>
-                <input type="submit" value="Modify" (click)="lookup()">
+        </div>
+        <div *ngIf="asset && asset.history.length > 0" class="device-checkout-history">
+            <h2 style="margin-top: 20px; margin-bottom: 20px;">Recent History</h2>
+            <div class="checkout-history-wrapper">
+                <div class="checkout-history-item" *ngFor="let history of asset.history">
+                    <div class="checkout-history-item-wrapper fullYCenter">
+                        <div class="checkout-history-item-details">
+                            <h3>{{history.user.name}}</h3>
+                            <h4><b>Time Out:</b> {{history.formatted.time_out}} <b style="padding-left: 5px;">Time In:</b> {{history.formatted.time_in}}</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 </div>

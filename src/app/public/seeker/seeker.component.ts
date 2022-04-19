@@ -20,6 +20,14 @@ export class SeekerComponent implements OnInit, AfterViewInit {
   public asset: any = null;
 
   ngOnInit(): void {
+    document.onkeydown = (e) => {
+      if (e.key === 'c') {
+        this.checkin()
+      }
+      if (e.key === 'b') {
+        this.navigateToPOS()
+      }
+    }
   }
 
   ngAfterViewInit(): void {
@@ -63,9 +71,11 @@ export class SeekerComponent implements OnInit, AfterViewInit {
       const response: any = await this.request.get(
         `${environment.API_URL}/read/assetCheckoutHistory?tag=${this.assetIDInput.nativeElement.value}`
       )
-
+      if (response.body === null) {
+        return {}
+      }
       response.body.forEach((his: any) => {
-        his.formatted = {}
+        his.formatted = []
 
         if (his.time_in) {
           his.formatted.time_in = dayjs(his.time_in).format('MMM D, h:mm a');

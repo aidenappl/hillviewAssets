@@ -198,6 +198,9 @@ export class LanderComponent implements OnInit, AfterViewInit {
     if (e.code === 'Enter' && (this.step === 2 || this.step === 3)) {
       // this.next();
     }
+    if (e.ctrlKey === true && e.key === 's') {
+      this.navigateToSeeker();
+    }
   }
 
   viewAssetHistory(asset: any): void {
