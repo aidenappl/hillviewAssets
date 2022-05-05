@@ -91,6 +91,11 @@ export class LanderComponent implements OnInit, AfterViewInit {
       return
     }
 
+    if (asset.status.id != 1) {
+      var error = new Audio('/assets/sounds/alert.wav');
+      error.play();
+    }
+
     this.cart.unshift(asset);
   }
 
