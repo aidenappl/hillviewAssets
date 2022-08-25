@@ -43,7 +43,7 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
   private selectedRes = 0;
 
-  public selector = 'single'
+  public selector = 'single';
 
   public cart: any = [];
 
@@ -72,23 +72,23 @@ export class LanderComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    let val = this.assetIDInput.nativeElement.value
+    let val = this.assetIDInput.nativeElement.value;
 
     let obj = this.cart.find((item: any) => item.identifier === val);
 
     if (obj != undefined) {
       window.alert('Asset already in cart');
-      this.assetIDInput.nativeElement.value = ""
+      this.assetIDInput.nativeElement.value = '';
       return;
     }
 
     let asset = await this.getAsset(val);
-    
-    this.assetIDInput.nativeElement.value = ""
+
+    this.assetIDInput.nativeElement.value = '';
 
     if (asset === null) {
-      window.alert("Asset not found");
-      return
+      window.alert('Asset not found');
+      return;
     }
 
     if (asset.status.id != 1) {
@@ -131,13 +131,13 @@ export class LanderComponent implements OnInit, AfterViewInit {
       if (event.keyCode === 40) {
         // Down Arrow
         this.focusNextResult();
-        return
+        return;
       }
 
       if (event.keyCode === 38) {
         // Down Arrow
         this.focusPrev();
-        return
+        return;
       }
 
       if (event.keyCode === 13) {
@@ -146,18 +146,18 @@ export class LanderComponent implements OnInit, AfterViewInit {
           this.selectResult(this.results[0]);
           this.next();
         } else {
-          this.selectFocuedResult()
+          this.selectFocuedResult();
         }
         this.focusInput('assetID');
         return;
       }
 
       this.selectedRes = 0;
-  
+
       let val = event.target.value;
-  
+
       if (val.length === 0) {
-        this.results = []
+        this.results = [];
         return;
       }
 
@@ -166,9 +166,8 @@ export class LanderComponent implements OnInit, AfterViewInit {
       const slicedArray = response.slice(0, 5);
 
       this.results = slicedArray;
-  
     } catch (error) {
-      console.error(error);   
+      console.error(error);
     }
   }
 
@@ -180,7 +179,7 @@ export class LanderComponent implements OnInit, AfterViewInit {
   async lookupMobileUserRequest(search: string): Promise<any> {
     try {
       const response = await this.request.get(
-        `${environment.CORE_API}/search/mobileUsers?search=${search}`
+        `${environment.CORE_API}/list/mobileUsers?limit=7&offset=0&search=${search}`
       );
       return response?.body;
     } catch (error) {
@@ -209,7 +208,7 @@ export class LanderComponent implements OnInit, AfterViewInit {
   }
 
   viewAssetHistory(asset: any): void {
-    this.asset = asset
+    this.asset = asset;
     this.selectedAction = 'lookup';
     this.next();
   }
@@ -288,10 +287,15 @@ export class LanderComponent implements OnInit, AfterViewInit {
         }
 
         if (this.selectedAction !== 'lookup') {
-          if (this.cart.filter((item: any) => item.active_tab != null).length > 0) {
-            return { valid: false, message: 'there are unavailable items in your cart' };
+          if (
+            this.cart.filter((item: any) => item.active_tab != null).length > 0
+          ) {
+            return {
+              valid: false,
+              message: 'there are unavailable items in your cart',
+            };
           }
-          this.selectedAction ='checkout';
+          this.selectedAction = 'checkout';
         }
 
         return { valid: true, message: '' };
@@ -320,9 +324,10 @@ export class LanderComponent implements OnInit, AfterViewInit {
   }
 
   checkout(): void {
-
     if (this.cart.filter((item: any) => item.status.id != 1).length > 0) {
-      let prmt = window.confirm("There are items in your cart that include warnings. Do you want to continue?");
+      let prmt = window.confirm(
+        'There are items in your cart that include warnings. Do you want to continue?'
+      );
       if (prmt) {
         // Do Nothing
       } else {
@@ -394,13 +399,13 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
   async getAsset(tag: string): Promise<any> {
     try {
-      if (tag === "") {
+      if (tag === '') {
         tag = this.assetIDInput.nativeElement.value;
       }
       const response: any = await this.request.get(
         `${environment.API_URL}/read/assetByTag/` + tag
       );
-      console.log(response.body)
+      console.log(response.body);
       return response.body;
     } catch (error) {
       throw error;
@@ -453,7 +458,7 @@ export class LanderComponent implements OnInit, AfterViewInit {
         }, 200);
         return;
       }
-      this.submitCart()
+      this.submitCart();
     } catch (error) {
       throw error;
     }
@@ -475,12 +480,12 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
       if (response.status === 200) {
         setTimeout(() => {
-          this.removeCartItem(item)
+          this.removeCartItem(item);
         }, 400);
       }
     } catch (error) {
       window.alert('Something went wrong!');
-      throw error
+      throw error;
     }
   }
 
@@ -488,7 +493,7 @@ export class LanderComponent implements OnInit, AfterViewInit {
     try {
       let data: any = {
         user_id: this.user.id,
-        offsite: this.locationAction === 'offsite'
+        offsite: this.locationAction === 'offsite',
       };
 
       let mydate: any = this.duration.nativeElement.value;
@@ -499,17 +504,17 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
       this.btnValue = '';
 
-      this.cart.forEach(async(item: any) => {
+      this.cart.forEach(async (item: any) => {
         data.asset_id = item.id;
         const response: any = await this.request.post(
           `${environment.API_URL}/checkout`,
           data
         );
-      })
+      });
       this.next();
     } catch (error) {
       window.alert('Something went wrong!');
-      throw error
+      throw error;
     }
   }
 }
