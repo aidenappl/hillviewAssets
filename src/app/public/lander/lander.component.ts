@@ -1,4 +1,3 @@
-import { HttpResponse } from '@angular/common/http';
 import {
   AfterViewInit,
   Component,
@@ -19,6 +18,7 @@ type LocationType = typeof validLocations[number];
   selector: 'app-lander',
   templateUrl: './lander.component.html',
   styleUrls: ['./lander.component.scss'],
+  standalone: false
 })
 export class LanderComponent implements OnInit, AfterViewInit {
   @ViewChild('studentID', { static: false }) studentIDInput!: ElementRef;
@@ -47,7 +47,7 @@ export class LanderComponent implements OnInit, AfterViewInit {
 
   public cart: any = [];
 
-  constructor(private request: RequestService) {}
+  constructor(private request: RequestService) { }
 
   ngOnInit(): void {
     document.addEventListener('keypress', (e: any) => {

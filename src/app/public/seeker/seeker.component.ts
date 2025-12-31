@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { RequestService } from 'src/services/http/request.service';
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs';
 @Component({
   selector: 'app-seeker',
   templateUrl: './seeker.component.html',
-  styleUrls: ['./seeker.component.scss']
+  styleUrls: ['./seeker.component.scss'],
+  standalone: false
 })
 export class SeekerComponent implements OnInit, AfterViewInit {
 
@@ -84,7 +85,7 @@ export class SeekerComponent implements OnInit, AfterViewInit {
         }
         his.formatted.time_out = dayjs(his.time_out).format('MMM D, h:mm a');
       })
-      
+
       return response.body;
     } catch (error) {
       throw error
@@ -103,7 +104,7 @@ export class SeekerComponent implements OnInit, AfterViewInit {
         data
       );
       window.alert("successfully checked in");
-        window.location.reload()
+      window.location.reload()
     } catch (error) {
       console.error(error)
     }

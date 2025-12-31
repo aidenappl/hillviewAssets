@@ -1,0 +1,22 @@
+commands:
+  - name: start
+    description: Start the Angular dev server
+    run: ng serve
+  - name: dev
+    description: Start development server with hot reload
+    run: ng serve --open
+  - name: build
+    description: Build for production
+    run: ng build --configuration production
+  - name: test
+    description: Run unit tests
+    run: ng test
+  - name: lint
+    description: Run linter
+    run: ng lint
+  - name: install
+    description: Install dependencies
+    run: npm install
+  - name: update
+    description: Update Angular dependencies
+    run: ng update
