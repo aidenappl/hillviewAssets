@@ -1,5 +1,7 @@
 # HillviewAssets
 
+> **⚠️ Retired 2026-10-16.** assets.hillview.tv now redirects to the team dashboard's assets page (hillview-team-web, `/team/dashboard/assets`). This repo is archived; the Vercel project `hillview-ms/hillview-assets` no longer serves traffic.
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.1.
 
 ## Development server
